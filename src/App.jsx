@@ -21,6 +21,7 @@ function App() {
       container: mapContainerRef.current,
       center: center,
       zoom: zoom,
+      style: "mapbox://styles/mapbox/dark-v10",
     });
 
     mapRef.current.on("move", () => {
@@ -43,7 +44,7 @@ function App() {
       <div className="sidebar">
         <h2>Flight Tracker App</h2>
         Longitude: {center[0].toFixed(4)} | Latitude: {center[1].toFixed(4)} |
-        Zoom: {zoom.toFixed(2)}
+        Zoom: {zoom.toFixed(1)}
       </div>
       <div id="map-container" ref={mapContainerRef} />
     </>
