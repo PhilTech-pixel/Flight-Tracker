@@ -1,8 +1,13 @@
 import "./App.css";
+import Icao24 from "./Icao24";
 import MapView from "./MapView";
 
 function App() {
-  return <MapView />;
+  return (
+    <div className="App">
+      <Icao24 />
+    </div>
+  );
 }
 
-export default App
+export default App;
