@@ -5,6 +5,7 @@ import MapView from "./MapView";
 function App() {
   return (
     <div className="App">
+        <MapView />
       <Icao24 />
     </div>
   );
