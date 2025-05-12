@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+//Gets flights by Aircraft from Previous day or earlier
 function Icao24() {
   const [IcaoNo, setIcaoNo] = useState("");
 
@@ -20,6 +20,18 @@ function Icao24() {
   };
   const key = Math.floor(Math.random() * 1000);
 
+  const DisplayData = data.map((flightdata) => {
+    return (
+      <tr>
+        <td>{flightdata.firstSeen}</td>
+        <td>{flightdata.estDepartureAirport}</td>
+        <td>{flightdata.lastSeen}</td>
+        <td>{flightdata.estArrivalAirport}</td>
+        <td>{flightdata.callsign}</td>
+      </tr>
+    );
+  });
+
   return (
     <div className="icao24">
       <h1>ICAO24</h1>
@@ -31,12 +43,20 @@ function Icao24() {
         placeholder="Enter ICAO24 Number"
       />
       <button onClick={fetchFlightData}>Search</button>
+
       <div className="icao24-data">
-        <ol>
-          {data.map((flightdata) => {
-            return <li>{flightdata.callsign}</li>;
-          })}
-        </ol>
+        <table>
+          <thead>
+            <tr>
+              <th>First Seen</th>
+              <th>Depatured Airport</th>
+              <th>Last Seen</th>
+              <th>Arrival Airport</th>
+              <th>CallSign</th>
+            </tr>
+          </thead>
+          <tbody>{DisplayData}</tbody>
+        </table>
       </div>
     </div>
   );
