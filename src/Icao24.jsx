@@ -43,6 +43,10 @@ function Icao24() {
         placeholder="Enter ICAO24 Number"
       />
       <button onClick={fetchFlightData}>Search</button>
+      <img
+        src="https://www.opensky-network.org/img/logo.png"
+        alt="Open Sky Network"
+      />
 
       <div className="icao24-data">
         <table>

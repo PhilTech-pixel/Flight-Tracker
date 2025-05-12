@@ -3,12 +3,7 @@ import Icao24 from "./Icao24";
 import MapView from "./MapView";
 
 function App() {
-  return (
-    <div className="App">
-        <MapView />
-      <Icao24 />
-    </div>
-  );
+  return <MapView />;
 }
 
 export default App;

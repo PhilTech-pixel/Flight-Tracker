@@ -15,8 +15,6 @@ function MapView() {
 
   // Fetch and update flight data as GeoJSON
   const fetchFlightData = async () => {
-    //const username = "Lip";
-    //const password = "CzPrAUpVT78W!A!";
     try {
       const response = await fetch(
         "https://opensky-network.org/api/states/all"
@@ -54,16 +52,25 @@ function MapView() {
           data: geojson,
         });
 
-        mapRef.current.addLayer({
-          id: "flights-layer",
-          type: "circle",
-          source: "flights",
-          paint: {
-            "circle-radius": 4,
-            "circle-stroke-width": 1,
-            "circle-color": "#00ffff",
-            "circle-stroke-color": "#000000",
-          },
+        mapRef.current.loadImage("/airplane.png", (error, image) => {
+          if (error) {
+            console.error("Error loading image:", error);
+            return;
+          }
+
+          if (!mapRef.current.hasImage("plane")) {
+            mapRef.current.addImage("plane", image);
+          }
+
+          mapRef.current.addLayer({
+            id: "flights-layer",
+            type: "symbol",
+            source: "flights",
+            layout: {
+              "icon-image": "plane",
+              "icon-size": 0.5,
+            },
+          });
         });
       }
     } catch (error) {
