@@ -35,6 +35,7 @@ function MapView() {
               origin_country: state[2],
               velocity: state[9],
               vertical_rate: state[11],
+              true_track: state[10],
               on_ground: state[8],
             },
             geometry: {
@@ -69,6 +70,9 @@ function MapView() {
             layout: {
               "icon-image": "plane",
               "icon-size": 0.5,
+              "icon-rotate": ["get", "true_track"],
+              "icon-allow-overlap": true,
+              
             },
           });
         });
