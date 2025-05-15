@@ -1,6 +1,5 @@
 import { useRef, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
-
 import "mapbox-gl/dist/mapbox-gl.css";
 
 const INITIAL_CENTER = [-74.0242, 40.6941]; // New York
@@ -9,40 +8,69 @@ const INITIAL_ZOOM = 2.5;
 function MapView() {
   const mapRef = useRef();
   const mapContainerRef = useRef();
-
   const [center, setCenter] = useState(INITIAL_CENTER);
   const [zoom, setZoom] = useState(INITIAL_ZOOM);
 
-  // Fetch and update flight data as GeoJSON
+  const icons = {
+    grounded: "/grounded.png",
+    takeoff: "/takeoff.png",
+    landing: "/landing.png",
+    cruising: "/airplane.png",
+  };
+
+  const preloadIcons = () => {
+    Object.entries(icons).forEach(([status, url]) => {
+      if (!mapRef.current.hasImage(status)) {
+        mapRef.current.loadImage(url, (error, image) => {
+          if (error || !image) {
+            console.error(`Failed to load ${status} icon:`, error);
+            return;
+          }
+          mapRef.current.addImage(status, image);
+        });
+      }
+    });
+  };
+
   const fetchFlightData = async () => {
     try {
       const response = await fetch(
         "https://opensky-network.org/api/states/all"
       );
-
       const data = await response.json();
-
       if (!data.states) return;
 
       const geojson = {
         type: "FeatureCollection",
         features: data.states
           .filter((state) => state[5] !== null && state[6] !== null)
-          .map((state) => ({
-            type: "Feature",
-            properties: {
-              callsign: state[1],
-              origin_country: state[2],
-              velocity: state[9],
-              vertical_rate: state[11],
-              true_track: state[10],
-              on_ground: state[8],
-            },
-            geometry: {
-              type: "Point",
-              coordinates: [state[5], state[6]],
-            },
-          })),
+          .map((state) => {
+            const verticalRate = state[11];
+            const onGround = state[8];
+            let status;
+
+            if (onGround) status = "grounded";
+            else if (verticalRate > 3) status = "takeoff";
+            else if (verticalRate < -3) status = "landing";
+            else status = "cruising";
+
+            return {
+              type: "Feature",
+              properties: {
+                callsign: state[1],
+                origin_country: state[2],
+                velocity: state[9],
+                vertical_rate: verticalRate,
+                true_track: state[10],
+                on_ground: onGround,
+                flight_status: status,
+              },
+              geometry: {
+                type: "Point",
+                coordinates: [state[5], state[6]],
+              },
+            };
+          }),
       };
 
       if (mapRef.current.getSource("flights")) {
@@ -53,28 +81,16 @@ function MapView() {
           data: geojson,
         });
 
-        mapRef.current.loadImage("/airplane.png", (error, image) => {
-          if (error) {
-            console.error("Error loading image:", error);
-            return;
-          }
-
-          if (!mapRef.current.hasImage("plane")) {
-            mapRef.current.addImage("plane", image);
-          }
-
-          mapRef.current.addLayer({
-            id: "flights-layer",
-            type: "symbol",
-            source: "flights",
-            layout: {
-              "icon-image": "plane",
-              "icon-size": 0.5,
-              "icon-rotate": ["get", "true_track"],
-              "icon-allow-overlap": true,
-              
-            },
-          });
+        mapRef.current.addLayer({
+          id: "flights-layer",
+          type: "symbol",
+          source: "flights",
+          layout: {
+            "icon-image": ["get", "flight_status"], // dynamic icon
+            "icon-size": 0.5,
+            "icon-rotate": ["get", "true_track"],
+            "icon-allow-overlap": true,
+          },
         });
       }
     } catch (error) {
@@ -105,10 +121,11 @@ function MapView() {
     });
 
     map.on("load", () => {
+      preloadIcons(); // load airplane icons
       fetchFlightData(); // Initial load
       const interval = setInterval(fetchFlightData, 30000); // every 30s
 
-      // Clean up interval when component unmounts
+      // Clean up
       return () => clearInterval(interval);
     });
 
