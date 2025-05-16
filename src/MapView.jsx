@@ -38,6 +38,7 @@ function MapView() {
         "https://opensky-network.org/api/states/all"
       );
       const data = await response.json();
+      console.log(data);
       if (!data.states) return;
 
       const geojson = {
@@ -58,6 +59,7 @@ function MapView() {
               type: "Feature",
               properties: {
                 callsign: state[1],
+                description: state[0],
                 origin_country: state[2],
                 velocity: state[9],
                 vertical_rate: verticalRate,
@@ -89,8 +91,39 @@ function MapView() {
             "icon-image": ["get", "flight_status"], // dynamic icon
             "icon-size": 0.5,
             "icon-rotate": ["get", "true_track"],
-            "icon-allow-overlap": true,
+            "icon-allow-overlap": false,
           },
+        });
+        const popup = new mapboxgl.Popup({
+          closeButton: false,
+          closeOnClick: false,
+        });
+        mapRef.current.on("mouseenter", "flights-layer", (e) => {
+          const coordinates = e.features[0].geometry.coordinates.slice();
+          const description = e.features[0].properties.description;
+          const callsign = e.features[0].properties.callsign;
+
+          popup
+            .setLngLat(coordinates)
+            .setHTML(
+              `<strong>${callsign}</strong><br><b>ICAO24</b>:${description}<br>Velocity: ${e.features[0].properties.velocity} m/s`
+            )
+            .addTo(mapRef.current);
+        });
+        mapRef.current.on("mouseleave", "flights-layer", () => {
+          popup.remove();
+        });
+        mapRef.current.on("click", "flights-layer", (e) => {
+          const coordinates = e.features[0].geometry.coordinates.slice();
+          const description = e.features[0].properties.description;
+          const callsign = e.features[0].properties.callsign;
+
+          new mapboxgl.Popup()
+            .setLngLat(coordinates)
+            .setHTML(
+              `<strong>${callsign}</strong><br>${description}<br>Velocity: ${e.features[0].properties.velocity} m/s`
+            )
+            .addTo(mapRef.current);
         });
       }
     } catch (error) {
