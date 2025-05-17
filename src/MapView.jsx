@@ -1,6 +1,7 @@
 import { useRef, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
+import { Outlet, Link } from "react-router-dom";
 
 const INITIAL_CENTER = [-74.0242, 40.6941]; // New York
 const INITIAL_ZOOM = 2.5;
@@ -171,6 +172,7 @@ function MapView() {
     <>
       <div className="sidebar">
         <h2>Flight Tracker App</h2>
+        <Link to="/search">Search Flight</Link>
         Longitude: {center[0].toFixed(4)} | Latitude: {center[1].toFixed(4)} |
         Zoom: {zoom.toFixed(1)}
       </div>

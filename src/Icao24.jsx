@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { Outlet, Link } from "react-router-dom";
 //Gets flights by Aircraft from Previous day or earlier
 function Icao24() {
   const [IcaoNo, setIcaoNo] = useState("");
+  
 
   // User search Data using plane ICAO Number
   const [data, setData] = useState([]);
@@ -35,6 +37,7 @@ function Icao24() {
   return (
     <div className="icao24">
       <h1>ICAO24</h1>
+      <Link to="/">Map</Link>
       <input
         name="icao"
         type="text"
