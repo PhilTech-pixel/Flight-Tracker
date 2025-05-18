@@ -75,6 +75,20 @@
   margin-top: 15px;
   width: 300px;
 }
+.row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  padding: 4px 0;
+}
+
+.label {
+  font-weight: bold;
+}
+
+.value {
+  color: #ddd;
+}
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
