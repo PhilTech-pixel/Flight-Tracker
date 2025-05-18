@@ -172,11 +172,61 @@ function MapView() {
     <>
       <div className="sidebar">
         <h2>Flight Tracker App</h2>
-        <Link to="/search">Search Flight</Link>
         Longitude: {center[0].toFixed(4)} | Latitude: {center[1].toFixed(4)} |
         Zoom: {zoom.toFixed(1)}
       </div>
       <div id="map-container" ref={mapContainerRef} />
+      <div className="flight-detail-box">
+        <div className="card-content">
+          <div className="card-root">
+            <div className="card-header flex-row justify-content-between">
+              <div>
+                <img src="/icon.png" alt="icon" className="icon" height={24} />
+              </div>
+              <div className="ml-4">ICAO24</div>
+            </div>
+
+            <div className="card-body flex-column">
+              <div className="d-flex flex-row justify-cotent-between">
+                <div>Last Contact</div>
+                <div>lslkkdkkd</div>
+              </div>
+              <div className="d-flex flex-row justify-cotent-between">
+                <div>Origin Country</div>
+                <div>lslkkdkkd</div>
+              </div>
+              <div className="d-flex flex-row justify-cotent-between">
+                <div>Velocity</div>
+                <div>lslkkdkkd</div>
+              </div>
+              <div className="d-flex flex-row justify-cotent-between">
+                <div>Geometric Altitude</div>
+                <div>lslkkdkkd</div>
+              </div>
+              <div className="d-flex flex-row justify-cotent-between">
+                <div>Barometric Altitude</div>
+                <div>lslkkdkkd</div>
+              </div>
+              <div className="d-flex flex-row justify-cotent-between">
+                <div>Vertical Rate</div>
+                <div>lslkkdkkd</div>
+              </div>
+              <div className="d-flex flex-row justify-cotent-between">
+                <div>Squawk</div>
+                <div>lslkkdkkd</div>
+              </div>
+              <div className="d-flex flex-row justify-cotent-between">
+                <div>ICAO24</div>
+                <div>lslkkdkkd</div>
+              </div>
+              <div className="d-flex flex-row justify-cotent-between">
+                <div>Position Source</div>
+                <div>lslkkdkkd</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 }
