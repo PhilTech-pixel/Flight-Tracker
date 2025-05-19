@@ -3,7 +3,9 @@ import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { Outlet, Link } from "react-router-dom";
 import FlightDetails from "./FlightDetails";
-
+import { Button } from "@/components/ui/button";
+import Search from "./Search";
+import { SheetTrigger } from "@/components/ui/sheet";
 const INITIAL_CENTER = [-74.0242, 40.6941]; // New York
 const INITIAL_ZOOM = 2.5;
 
@@ -178,7 +180,23 @@ function MapView() {
         Longitude: {center[0].toFixed(4)} | Latitude: {center[1].toFixed(4)} |
         Zoom: {zoom.toFixed(1)}
       </div>
-      <div id="map-container" ref={mapContainerRef} />
+      <div
+        id="map-container"
+        ref={mapContainerRef}
+        className="absolute top-0 left-0 w-full h-full z-0"
+      />
+      <div className="search">
+        <Search
+          onOpenChange={(isOpen) => {
+            if (isOpen && mapRef.current) {
+              // Delay slightly to let the Sheet animation complete
+              setTimeout(() => {
+                mapRef.current.resize();
+              }, 300);
+            }
+          }}
+        />
+      </div>
       <FlightDetails />
     </>
   );

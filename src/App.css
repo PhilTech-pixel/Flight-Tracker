@@ -89,6 +89,12 @@
 .value {
   color: #ddd;
 }
+.search {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 12px;
+}
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
