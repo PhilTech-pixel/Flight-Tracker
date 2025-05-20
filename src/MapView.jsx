@@ -14,6 +14,7 @@ function MapView() {
   const mapContainerRef = useRef();
   const [center, setCenter] = useState(INITIAL_CENTER);
   const [zoom, setZoom] = useState(INITIAL_ZOOM);
+  const [selectedFlightData, setSelectedFlightData] = useState(null);
 
   const icons = {
     grounded: "/grounded.png",
@@ -70,6 +71,12 @@ function MapView() {
                 true_track: state[10],
                 on_ground: onGround,
                 flight_status: status,
+                lastContact: state[4],
+                geo_altitude: state[13],
+                baro_altitude: state[7],
+                squawk: state[14],
+                position_source: state[16],
+                icao24: state[0],
               },
               geometry: {
                 type: "Point",
@@ -98,10 +105,12 @@ function MapView() {
             "icon-allow-overlap": false,
           },
         });
+
         const popup = new mapboxgl.Popup({
           closeButton: false,
           closeOnClick: false,
         });
+
         mapRef.current.on("mouseenter", "flights-layer", (e) => {
           const coordinates = e.features[0].geometry.coordinates.slice();
           const description = e.features[0].properties.description;
@@ -114,10 +123,16 @@ function MapView() {
             )
             .addTo(mapRef.current);
         });
+
         mapRef.current.on("mouseleave", "flights-layer", () => {
           popup.remove();
         });
+
         mapRef.current.on("click", "flights-layer", (e) => {
+          // Set the selected flight data for FlightDetails
+          setSelectedFlightData(e.features[0].properties);
+
+          // Optionally show popup as well
           const coordinates = e.features[0].geometry.coordinates.slice();
           const description = e.features[0].properties.description;
           const callsign = e.features[0].properties.callsign;
@@ -169,6 +184,7 @@ function MapView() {
     return () => {
       map.remove();
     };
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -194,7 +210,7 @@ function MapView() {
         }}
       />
 
-      <FlightDetails />
+      <FlightDetails flight={selectedFlightData} />
     </>
   );
 }
