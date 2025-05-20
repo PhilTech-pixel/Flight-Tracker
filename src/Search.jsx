@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
 import {
   Sheet,
   SheetClose,
@@ -14,35 +13,22 @@ import {
 } from "@/components/ui/sheet";
 
 export default function Search() {
-  const [open, setOpen] = useState(false);
-
-  const handleOpenChange = (isOpen) => {
-    setOpen(isOpen);
-    onOpenChange?.(isOpen); // notify parent
-  };
   return (
-    <Sheet open={open} onOpenChange={handleOpenChange}>
+    <Sheet>
       <SheetTrigger asChild>
         <Button variant="ghost">Search</Button>
       </SheetTrigger>
-      <SheetContent>
+      <SheetContent
+        side="right"
+        className="fixed top-0 right-0 h-full w-96 bg-transparent border border-white/20 shadow-lg text-white z-50"
+      >
         <SheetHeader>
           <SheetTitle>Search Plane</SheetTitle>
           <SheetDescription>Search Plane</SheetDescription>
         </SheetHeader>
         <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input id="name" value="Pedro Duarte" className="col-span-3" />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Input id="username" value="@peduarte" className="col-span-3" />
-          </div>
+          <div className="grid grid-cols-4 items-center gap-4"></div>
+          <div className="grid grid-cols-4 items-center gap-4"></div>
         </div>
         <SheetFooter>
           <SheetClose asChild>

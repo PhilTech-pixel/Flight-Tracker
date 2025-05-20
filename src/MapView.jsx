@@ -179,24 +179,21 @@ function MapView() {
         </h2>
         Longitude: {center[0].toFixed(4)} | Latitude: {center[1].toFixed(4)} |
         Zoom: {zoom.toFixed(1)}
+        <Search />
       </div>
       <div
         id="map-container"
         ref={mapContainerRef}
-        className="absolute top-0 left-0 w-full h-full z-0"
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100vw",
+          height: "100vh",
+          zIndex: 0,
+        }}
       />
-      <div className="search">
-        <Search
-          onOpenChange={(isOpen) => {
-            if (isOpen && mapRef.current) {
-              // Delay slightly to let the Sheet animation complete
-              setTimeout(() => {
-                mapRef.current.resize();
-              }, 300);
-            }
-          }}
-        />
-      </div>
+
       <FlightDetails />
     </>
   );
