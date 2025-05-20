@@ -4,3 +4,9 @@ An application that tracks flights across the globe. By the use of OpenSky Netwo
 
 ![Screenshot 2025-05-16 at 18 45 09](https://github.com/user-attachments/assets/9a28273f-fecc-4ec6-ad18-f91c9c1a1b85)
 
+![Screenshot 2025-05-20 at 18 14 48](https://github.com/user-attachments/assets/069a5f14-b73e-498e-b4bb-4396694e23b4)
+
+![Screenshot 2025-05-20 at 18 17 38](https://github.com/user-attachments/assets/ceed5467-6fce-4efb-b963-0eb415c75c14)
+
+
+
