@@ -151,8 +151,7 @@ function MapView() {
   };
 
   useEffect(() => {
-    mapboxgl.accessToken =
-      "pk.eyJ1IjoicHdubGFiIiwiYSI6ImNtYWUzaXV4NTAzZDQya3Nnendqc3lyZTYifQ.X7ux09Uxtzp7h5dhQGrEUA";
+    mapboxgl.accessToken = "ACCESS_TOKEN";
 
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
