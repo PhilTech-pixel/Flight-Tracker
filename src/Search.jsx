@@ -26,7 +26,7 @@ export default function Search() {
       );
 
       setData(await response.json());
-      console.log(data); // Log the data or handle it as needed
+      
     } catch (error) {
       console.error("Error fetching flight data:", error); // Handle errors
     }
